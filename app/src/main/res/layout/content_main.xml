@@ -8,4 +8,11 @@
     tools:context="com.howoh.studyv2.studyv2_1.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <Button
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="-117dp"
+        tools:layout_editor_absoluteY="320dp" />
 </android.support.constraint.ConstraintLayout>
