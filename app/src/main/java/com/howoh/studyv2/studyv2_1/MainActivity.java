@@ -3,9 +3,7 @@ package com.howoh.studyv2.studyv2_1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +26,8 @@ public class MainActivity extends BaseActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private FragmentManager fm;
+
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
 
@@ -47,8 +47,11 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // default fragment
+        fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.main, new EwFragment()).commit();
 
-        //////////////////////////////////////////////////////////////////////////
+        // firebase auth
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -59,6 +62,7 @@ public class MainActivity extends BaseActivity
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -100,18 +104,16 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_ew) {
+            fm.beginTransaction().replace(R.id.main, new EwFragment()).commit();
+        } else if (id == R.id.nav_lw) {
+            fm.beginTransaction().replace(R.id.main, new LwFragment()).commit();
+        } else if (id == R.id.nav_c4) {
+            fm.beginTransaction().replace(R.id.main, new C4Fragment()).commit();
+        } else if (id == R.id.nav_cc) {
+            fm.beginTransaction().replace(R.id.main, new CcFragment()).commit();
+        } else if (id == R.id.nav_info) {
+            fm.beginTransaction().replace(R.id.main, new InfoFragment()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
