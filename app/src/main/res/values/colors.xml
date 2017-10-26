@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="black">#000000</color>
+    <color name="gray">#BEBEBE</color>
+    <color name="black_1">#c8464646</color>
+
+    <color name="app_bar_bg">#4267b2</color>
+    <color name="content_bg">#e9ebee</color>
 </resources>
