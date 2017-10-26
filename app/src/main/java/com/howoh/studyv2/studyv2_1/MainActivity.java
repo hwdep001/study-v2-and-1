@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity
         fm.beginTransaction().replace(R.id.main, new EwFragment()).commit();
 
         // firebase auth
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
+//        findViewById(R.id.sign_out_button).setOnClickListener(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -142,8 +142,8 @@ public class MainActivity extends BaseActivity
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.sign_out_button) {
-            signOut();
-        }
+//        if (i == R.id.sign_out_button) {
+//            signOut();
+//        }
     }
 }
