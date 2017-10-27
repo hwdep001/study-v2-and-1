@@ -14,8 +14,8 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.howoh.studyv2.studyv2_1.BaseActivity;
 import com.howoh.studyv2.studyv2_1.R;
-import com.howoh.studyv2.studyv2_1.StartActivity;
 
 /**
  * Created by howoh on 2017-10-26.
@@ -98,7 +98,7 @@ public class FirebaseMsgService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, StartActivity.class);
+        Intent intent = new Intent(this, BaseActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

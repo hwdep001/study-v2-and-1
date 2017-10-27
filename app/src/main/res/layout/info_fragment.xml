@@ -199,76 +199,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/info_head2_linear"
-        android:layout_width="match_parent"
-        android:layout_height="40sp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/content_bg"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:layout_below="@+id/info_content1_linear"
-        android:scrollbarAlwaysDrawVerticalTrack="false">
-
-        <TextView
-            android:id="@+id/info_head2_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10sp"
-            android:paddingRight="10sp"
-            android:text="Config"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/info_content2_linear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/info_head2_linear"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/info_content2_signout_linear"
-            android:layout_width="match_parent"
-            android:layout_height="50sp"
-            android:bottom="15dp"
-            android:background="@drawable/border_bottom"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:gravity="center_vertical"
-                android:paddingLeft="10sp"
-                android:paddingRight="10sp"
-                android:text="Sign out"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/info_content2_signout_text"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:gravity="right|center_vertical"
-                android:paddingLeft="10sp"
-                android:paddingRight="10sp"
-                android:text="asdasdasdasdasdasd"
-                android:textColor="@color/gray"
-                android:textSize="15sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/info_free_linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/info_content2_linear"
+        android:layout_below="@+id/info_content1_linear"
         android:background="@color/content_bg"
         android:orientation="vertical">
     </LinearLayout>

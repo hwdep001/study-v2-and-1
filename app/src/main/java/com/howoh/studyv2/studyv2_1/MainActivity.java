@@ -1,6 +1,7 @@
 package com.howoh.studyv2.studyv2_1;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -21,6 +24,11 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.howoh.studyv2.studyv2_1.service.AuthService;
+import com.howoh.studyv2.studyv2_1.vo.User;
+
+import org.w3c.dom.Text;
+
+import java.net.URL;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,6 +56,22 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        initNavText(navigationView);
+        initFirebase();
+    }
+
+    private void initNavText(NavigationView navigationView) {
+        User currentUser = AuthService.currentUser;
+        View navHeaderMain = navigationView.getHeaderView(0);
+        ImageView photoURL = (ImageView) navHeaderMain.findViewById(R.id.nav_header_main_photoURL);
+        TextView name = (TextView) navHeaderMain.findViewById(R.id.nav_header_main_name);
+        TextView email = (TextView) navHeaderMain.findViewById(R.id.nav_header_main_email);
+        photoURL.setImageURI(Uri.parse(currentUser.getPhotoURL()));
+        name.setText(currentUser.getName());
+        email.setText(currentUser.getEmail());
+    }
+
+    private void initFirebase() {
         // default fragment
         fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.main, new EwFragment()).commit();
@@ -64,14 +88,6 @@ public class MainActivity extends BaseActivity
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
-
-        /////////////////////////////////
-        Log.d(TAG, "~: " + AuthService.currentUser.toString());
-        Log.d(TAG, "~: " + AuthService.currentUser.toString());
-        Log.d(TAG, "~: " + AuthService.currentUser.toString());
-        Log.d(TAG, "~: " + AuthService.currentUser.toString());
-        Log.d(TAG, "~: " + AuthService.currentUser.toString());
-        Log.d(TAG, "~: " + AuthService.currentUser.toString());
     }
 
     @Override

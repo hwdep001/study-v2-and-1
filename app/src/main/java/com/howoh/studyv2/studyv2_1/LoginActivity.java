@@ -139,10 +139,6 @@ public class LoginActivity extends BaseActivity implements
                     user = new User(fireUser.getUid());
                     user.setCreationDate(currentDateStr);
                     user.setAuthenticated(false);
-                } else if(user.isAuthenticated() == false) {
-                    hideProgressDialog();
-                    Toast.makeText(getApplicationContext(), "인증 실패", Toast.LENGTH_LONG).show();
-                    return;
                 }
                 user.setEmail(fireUser.getEmail());
                 user.setName(fireUser.getDisplayName());
@@ -150,13 +146,18 @@ public class LoginActivity extends BaseActivity implements
                 user.setLastSignInDate(currentDateStr);
 
                 mDb.getReference("users").child(user.getUid()).setValue(user);
-                AuthService.setCurrentUser(user);
 
                 hideProgressDialog();
 
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                if(user.isAuthenticated()) {
+                    AuthService.setCurrentUser(user);
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "인증 실패", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
