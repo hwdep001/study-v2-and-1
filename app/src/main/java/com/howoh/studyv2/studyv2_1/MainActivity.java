@@ -21,8 +21,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -52,7 +51,6 @@ public class MainActivity extends BaseActivity
         fm.beginTransaction().replace(R.id.main, new EwFragment()).commit();
 
         // firebase auth
-//        findViewById(R.id.sign_out_button).setOnClickListener(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -114,6 +112,8 @@ public class MainActivity extends BaseActivity
             fm.beginTransaction().replace(R.id.main, new CcFragment()).commit();
         } else if (id == R.id.nav_info) {
             fm.beginTransaction().replace(R.id.main, new InfoFragment()).commit();
+        } else if (id == R.id.nav_sign_out) {
+            signOut();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,21 +129,14 @@ public class MainActivity extends BaseActivity
 
         // Google sign out
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    }
-                });
+            new ResultCallback<Status>() {
+                @Override
+                public void onResult(@NonNull Status status) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            });
     }
 
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-//        if (i == R.id.sign_out_button) {
-//            signOut();
-//        }
-    }
 }
