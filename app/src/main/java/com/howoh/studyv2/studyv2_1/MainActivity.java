@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
+import com.howoh.studyv2.studyv2_1.service.AuthService;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,6 +64,14 @@ public class MainActivity extends BaseActivity
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
+
+        /////////////////////////////////
+        Log.d(TAG, "~: " + AuthService.currentUser.toString());
+        Log.d(TAG, "~: " + AuthService.currentUser.toString());
+        Log.d(TAG, "~: " + AuthService.currentUser.toString());
+        Log.d(TAG, "~: " + AuthService.currentUser.toString());
+        Log.d(TAG, "~: " + AuthService.currentUser.toString());
+        Log.d(TAG, "~: " + AuthService.currentUser.toString());
     }
 
     @Override

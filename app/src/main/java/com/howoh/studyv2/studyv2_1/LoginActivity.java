@@ -19,6 +19,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.howoh.studyv2.studyv2_1.service.AuthService;
+import com.howoh.studyv2.studyv2_1.util.CommonUtil;
+import com.howoh.studyv2.studyv2_1.vo.User;
+
+import java.util.Date;
 
 public class LoginActivity extends BaseActivity implements
         View.OnClickListener {
@@ -28,7 +37,9 @@ public class LoginActivity extends BaseActivity implements
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
+    private FirebaseDatabase mDb;
 
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +59,17 @@ public class LoginActivity extends BaseActivity implements
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
+        mDb = FirebaseDatabase.getInstance();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        showProgressDialog();
+        mDb = FirebaseDatabase.getInstance();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        signInProcess(currentUser);
     }
 
     @Override
@@ -63,7 +85,7 @@ public class LoginActivity extends BaseActivity implements
                 firebaseAuthWithGoogle(account);
             } else {
                 // Google Sign In failed, update UI appropriately
-                updateUI(null);
+                signInProcess(null);
             }
         }
     }
@@ -81,13 +103,13 @@ public class LoginActivity extends BaseActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            signInProcess(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            signInProcess(null);
                         }
 
                         hideProgressDialog();
@@ -100,14 +122,48 @@ public class LoginActivity extends BaseActivity implements
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void updateUI(FirebaseUser user) {
-        hideProgressDialog();
+    private void signInProcess(final FirebaseUser fireUser) {
 
-        if(user != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+        if(fireUser == null) {
+            hideProgressDialog();
+            return;
         }
+
+        mDb.getReference("users").child(fireUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                String currentDateStr = CommonUtil.dateToyyyy_MM_dd_HH_mm_ss(new Date());
+
+                if(user == null) {
+                    user = new User(fireUser.getUid());
+                    user.setCreationDate(currentDateStr);
+                    user.setAuthenticated(false);
+                } else if(user.isAuthenticated() == false) {
+                    hideProgressDialog();
+                    Toast.makeText(getApplicationContext(), "인증 실패", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                user.setEmail(fireUser.getEmail());
+                user.setName(fireUser.getDisplayName());
+                user.setPhotoURL(fireUser.getPhotoUrl().toString());
+                user.setLastSignInDate(currentDateStr);
+
+                mDb.getReference("users").child(user.getUid()).setValue(user);
+                AuthService.setCurrentUser(user);
+
+                hideProgressDialog();
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+        });
     }
 
     @Override

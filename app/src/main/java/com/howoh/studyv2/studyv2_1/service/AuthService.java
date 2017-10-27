@@ -10,37 +10,23 @@ public class AuthService {
 
     private static final String TAG = AuthService.class.getSimpleName();
 
-    private static User currentUser;
-
-    public static String uid() {
-        return currentUser.getUid();
-    }
-
-    public String email() {
-        return currentUser.getEmail();
-    }
-
-    public String photoURL() {
-        return currentUser.getPhotoURL();
-    }
-
-    public String name() {
-        return currentUser.getName();
-    }
-
-    public String creationDate() {
-        return currentUser.getCreationDate();
-    }
-
-    public String lastSignInDate() {
-        return currentUser.getLastSignInDate();
-    }
-
-    public boolean authenticated() {
-        return currentUser.isAuthenticated();
-    }
+    public static User currentUser;
+    public static String uid;
+    public static String email;
+    public static String name;
+    public static String photoURL;
+    public static String creationDate;
+    public static String lastSignInDate;
+    public static boolean authenticated;
 
     public static void setCurrentUser(User user) {
         currentUser = user;
+        uid = user.getUid();
+        email = user.getEmail();
+        name = user.getName();
+        photoURL = user.getPhotoURL();
+        creationDate = user.getCreationDate();
+        lastSignInDate = user.getLastSignInDate();
+        authenticated = user.isAuthenticated();
     }
 }
